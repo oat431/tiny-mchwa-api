@@ -14,14 +14,14 @@ type Todolist struct {
 }
 
 type CreateTodolistRequest struct {
-	Title         string `json:"title" validate:"required|max_len:255"`
-	Description   string `json:"description" validate:"max_len:1000"`
-	SourceService string `json:"sourceService" validate:"required|max_len:100"`
+	Title         string `json:"title" validate:"required,max=255"`
+	Description   string `json:"description" validate:"max=1000"`
+	SourceService string `json:"sourceService" validate:"required,max=100"`
 }
 
 type UpdateTodolistRequest struct {
-	Title       string `json:"title" validate:"required|max_len:255"`
-	Description string `json:"description" validate:"max_len:1000"`
+	Title       string `json:"title" validate:"required,max=255"`
+	Description string `json:"description" validate:"max=1000"`
 }
 
 type ListTodolistsParams struct {

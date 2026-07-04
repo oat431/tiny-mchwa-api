@@ -31,7 +31,8 @@ func New(cfg config.Config) (*App, error) {
 
 	// Fiber
 	f := fiber.New(fiber.Config{
-		BodyLimit: 10 * 1024 * 1024,
+		BodyLimit:      10 * 1024 * 1024,
+		StructValidator: mw.NewValidator(),
 		ErrorHandler: func(c fiber.Ctx, err error) error {
 			code := fiber.StatusInternalServerError
 			if e, ok := err.(*fiber.Error); ok {
