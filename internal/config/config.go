@@ -18,7 +18,7 @@ func Load() Config {
 	_ = godotenv.Load()
 
 	return Config{
-		Port:     getEnv("PORT", "3000"),
+		Port:     getEnv("PORT", "8005"),
 		DBUrl:    getEnv("DATABASE_URL", "postgres://postgres:***@localhost:5432/tiny_mchwa?sslmode=disable"),
 		LogLevel: getEnv("LOG_LEVEL", "info"),
 	}
