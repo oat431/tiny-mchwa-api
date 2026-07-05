@@ -25,9 +25,12 @@ func New(cfg config.Config) (*App, error) {
 	}
 
 	// Wire layers
-	repo := repository.NewTodolistRepository(db)
-	svc := service.NewTodolistService(repo)
-	h := handler.NewTodolistHandler(svc)
+	todoRepo := repository.NewTodolistRepository(db)
+	taskRepo := repository.NewTaskRepository(db)
+	todoSvc := service.NewTodolistService(todoRepo)
+	taskSvc := service.NewTaskService(taskRepo, todoRepo, todoSvc)
+	todoH := handler.NewTodolistHandler(todoSvc)
+	taskH := handler.NewTaskHandler(taskSvc)
 
 	// Fiber
 	f := fiber.New(fiber.Config{
@@ -50,13 +53,22 @@ func New(cfg config.Config) (*App, error) {
 		return c.SendStatus(200)
 	})
 
-	// Routes
+	// Todolist routes
 	v1 := f.Group("/api/v1")
-	v1.Post("/todolists", h.Create)
-	v1.Get("/todolists", h.List)
-	v1.Get("/todolists/:id", h.GetByID)
-	v1.Put("/todolists/:id", h.Update)
-	v1.Delete("/todolists/:id", h.Delete)
+	v1.Post("/todolists", todoH.Create)
+	v1.Get("/todolists", todoH.List)
+	v1.Get("/todolists/:id", todoH.GetByID)
+	v1.Put("/todolists/:id", todoH.Update)
+	v1.Delete("/todolists/:id", todoH.Delete)
+
+	// Task routes (nested under todolists)
+	v1.Post("/todolists/:todolistId/tasks", taskH.Create)
+	v1.Get("/todolists/:todolistId/tasks", taskH.List)
+
+	// Task routes (direct access)
+	v1.Get("/tasks/:id", taskH.GetByID)
+	v1.Put("/tasks/:id", taskH.Update)
+	v1.Delete("/tasks/:id", taskH.Delete)
 
 	// 404
 	f.Use(func(c fiber.Ctx) error {
