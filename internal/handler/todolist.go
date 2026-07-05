@@ -44,12 +44,6 @@ func (h *TodolistHandler) Create(c fiber.Ctx) error {
 	if err := c.Bind().JSON(&req); err != nil {
 		return apiErr(c, 400, "Validation failed", err.Error())
 	}
-	if req.Title == "" {
-		return apiErr(c, 400, "Validation failed", "title is required")
-	}
-	if req.SourceService == "" {
-		return apiErr(c, 400, "Validation failed", "sourceService is required")
-	}
 
 	tl, err := h.svc.Create(c.Context(), req, getUserID(c))
 	if err != nil {
@@ -109,9 +103,6 @@ func (h *TodolistHandler) Update(c fiber.Ctx) error {
 	var req model.UpdateTodolistRequest
 	if err := c.Bind().JSON(&req); err != nil {
 		return apiErr(c, 400, "Validation failed", err.Error())
-	}
-	if req.Title == "" {
-		return apiErr(c, 400, "Validation failed", "title is required")
 	}
 
 	tl, err := h.svc.Update(c.Context(), id, req, getUserID(c))
