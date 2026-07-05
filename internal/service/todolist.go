@@ -6,7 +6,6 @@ import (
 	"log/slog"
 
 	"oat431/tiny-mchawa-api/internal/model"
-	"oat431/tiny-mchawa-api/internal/repository"
 )
 
 var (
@@ -15,10 +14,10 @@ var (
 )
 
 type TodolistService struct {
-	repo *repository.TodolistRepository
+	repo TodolistRepo
 }
 
-func NewTodolistService(repo *repository.TodolistRepository) *TodolistService {
+func NewTodolistService(repo TodolistRepo) *TodolistService {
 	return &TodolistService{repo: repo}
 }
 

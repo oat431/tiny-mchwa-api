@@ -5,17 +5,15 @@ import (
 	"log/slog"
 
 	"oat431/tiny-mchawa-api/internal/model"
-	"oat431/tiny-mchawa-api/internal/repository"
 )
 
 type TaskService struct {
-	taskRepo    *repository.TaskRepository
-	todoRepo    *repository.TodolistRepository
-	todoService *TodolistService
+	taskRepo TaskRepo
+	todoRepo TodolistRepo
 }
 
-func NewTaskService(taskRepo *repository.TaskRepository, todoRepo *repository.TodolistRepository, todoService *TodolistService) *TaskService {
-	return &TaskService{taskRepo: taskRepo, todoRepo: todoRepo, todoService: todoService}
+func NewTaskService(taskRepo TaskRepo, todoRepo TodolistRepo) *TaskService {
+	return &TaskService{taskRepo: taskRepo, todoRepo: todoRepo}
 }
 
 func (s *TaskService) Create(ctx context.Context, todolistID string, req model.CreateTaskRequest, ownedBy string) (*model.Task, error) {
