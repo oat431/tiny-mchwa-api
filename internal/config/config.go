@@ -3,6 +3,8 @@ package config
 import (
 	"log/slog"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -12,6 +14,9 @@ type Config struct {
 }
 
 func Load() Config {
+	// ponytail: ignore error — .env is optional, env vars take precedence
+	_ = godotenv.Load()
+
 	return Config{
 		Port:     getEnv("PORT", "3000"),
 		DBUrl:    getEnv("DATABASE_URL", "postgres://postgres:***@localhost:5432/tiny_mchwa?sslmode=disable"),
