@@ -28,7 +28,7 @@ func New(cfg config.Config) (*App, error) {
 	todoRepo := repository.NewTodolistRepository(db)
 	taskRepo := repository.NewTaskRepository(db)
 	todoSvc := service.NewTodolistService(todoRepo)
-	taskSvc := service.NewTaskService(taskRepo, todoRepo, todoSvc)
+	taskSvc := service.NewTaskService(taskRepo, todoRepo)
 	todoH := handler.NewTodolistHandler(todoSvc)
 	taskH := handler.NewTaskHandler(taskSvc)
 
